@@ -11,10 +11,12 @@ from discord.ext import commands
 
 
 
+
 bot = commands.Bot(command_prefix="s!", help_command=None)
 
 @bot.event
 async def on_ready():
+    await bot.change_presence(status=discord.Status.idle, activity=discord.Game("s!help"))
     print("logged in as {bot.user}")
 
 @bot.command()
@@ -44,7 +46,7 @@ async def on_message(message):
 @bot.command()
 async def play(ctx, *, url):
     if ctx.author.voice is None:
-        await ctx.send("You are not in a voice channel!")
+        await ctx.send("คุณไม่ได้อยู่ในห้องนี้!!!")
     voice_channel = ctx.author.voice.channel
     if ctx.voice_client is None:
         await voice_channel.connect()
@@ -82,7 +84,7 @@ async def stop(ctx):
 async def pause(ctx):
     voice_client = get(bot.voice_clients, guild=ctx.guild)
     if voice_client == None:
-        await ctx.channel.send("Bot is not connected to vc")
+        await ctx.channel.send("บอทไม่ได้เชื่อมต่อในขณะนี้")
         return
 
     if voice_client.channel != ctx.author.voice.channel:
@@ -95,7 +97,7 @@ async def pause(ctx):
 async def resume(ctx):
     voice_client = get(bot.voice_clients, guild=ctx.guild)
     if voice_client == None:
-        await ctx.channel.send("Bot is not connected to vc")
+        await ctx.channel.send("บอทไม่ได้เชื่อมต่อในขณะนี้")
         return
 
     if voice_client.channel != ctx.author.voice.channel:
